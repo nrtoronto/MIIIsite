@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ventures — MIII Holdings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Geist+Mono:wght@300;400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#080808;--fg:#EFEFEB;--gold:#B8965A;--gold-dim:rgba(184,150,90,.12);--dim:rgba(239,239,235,.35);--border:rgba(239,239,235,.08);--pad:64px;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--fg);font-family:'Outfit',sans-serif;font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none;}
+#cur{position:fixed;width:5px;height:5px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+#cur-ring{position:fixed;width:28px;height:28px;border:1px solid rgba(184,150,90,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:28px var(--pad);display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.logo{font-family:'Geist Mono',monospace;font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--fg);text-decoration:none;}
+.logo b{color:var(--gold);}
+.nav-r{display:flex;align-items:center;gap:48px;}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{font-family:'Geist Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--fg);}
+.nav-btn{font-family:'Geist Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(184,150,90,.3);padding:10px 22px;text-decoration:none;background:none;transition:background .2s;}
+.nav-btn:hover{background:var(--gold-dim);}
+
+/* HEADER */
+.page-header{padding:160px var(--pad) 100px;border-bottom:1px solid var(--border);}
+.ph-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;}
+.ph-eyebrow{font-family:'Geist Mono',monospace;font-size:.55rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;display:flex;align-items:center;gap:16px;opacity:0;animation:up .9s .1s forwards;}
+.ph-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold);display:block;}
+.ph-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,6.5vw,92px);font-weight:300;line-height:1.03;opacity:0;animation:up 1s .25s forwards;}
+.ph-h1 i{font-style:italic;color:var(--gold);}
+.ph-right{opacity:0;animation:up .9s .4s forwards;}
+.ph-desc{font-size:.88rem;line-height:1.85;color:var(--dim);margin-bottom:40px;}
+.ph-jump{display:flex;flex-direction:column;}
+.ph-jump-item{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:padding-left .2s;}
+.ph-jump-item:first-child{border-top:1px solid var(--border);}
+.ph-jump-item:hover{padding-left:8px;}
+.ph-jump-item:hover .pjn{color:var(--gold);}
+.ph-jump-item:hover .pja{opacity:1;}
+.pjnum{font-family:'Geist Mono',monospace;font-size:.52rem;letter-spacing:.2em;color:var(--dim);}
+.pjn{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;color:var(--fg);transition:color .2s;}
+.pja{font-family:'Geist Mono',monospace;font-size:.52rem;color:var(--gold);opacity:0;transition:opacity .2s;}
+
+/* DIVISION SECTIONS */
+.div-section{padding:120px var(--pad);border-bottom:1px solid var(--border);scroll-margin-top:80px;}
+.div-section:nth-child(odd){background:#0C0C0A;}
+.ds-top{display:grid;grid-template-columns:80px 1fr;gap:40px;align-items:start;margin-bottom:72px;}
+.ds-num{font-family:'Geist Mono',monospace;font-size:.55rem;letter-spacing:.3em;color:var(--gold);padding-top:14px;}
+.ds-title{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5vw,72px);font-weight:300;line-height:1.03;margin-bottom:16px;}
+.ds-title i{font-style:italic;color:var(--gold);}
+.ds-tagline{font-size:.88rem;line-height:1.85;color:var(--dim);max-width:580px;}
+.ds-body{display:grid;grid-template-columns:1fr 1fr;gap:80px;padding-left:120px;}
+
+/* Projects */
+.proj-label{font-family:'Geist Mono',monospace;font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:32px;}
+.proj-item{display:flex;align-items:flex-start;gap:20px;padding:22px 0;border-bottom:1px solid var(--border);}
+.proj-item:first-of-type{border-top:1px solid var(--border);}
+.proj-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);margin-top:7px;flex-shrink:0;opacity:.55;}
+.proj-info{flex:1;}
+.proj-name{font-size:.9rem;font-weight:400;margin-bottom:6px;}
+.proj-desc{font-size:.76rem;line-height:1.65;color:var(--dim);}
+.proj-tag{font-family:'Geist Mono',monospace;font-size:.48rem;letter-spacing:.15em;text-transform:uppercase;margin-top:8px;}
+.proj-tag.live{color:var(--gold);}
+.proj-tag.build{color:var(--dim);}
+
+/* Roster cards (Studios) */
+.roster-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:0;}
+.roster-card{background:#080808;padding:36px 32px;transition:background .2s;position:relative;}
+.div-section:nth-child(odd) .roster-card{background:#0C0C0A;}
+.roster-card:hover{background:#111;}
+.rc-genre{font-family:'Geist Mono',monospace;font-size:.48rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.rc-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;margin-bottom:10px;transition:color .2s;}
+.roster-card:hover .rc-name{color:var(--gold);}
+.rc-desc{font-size:.76rem;line-height:1.65;color:var(--dim);}
+.rc-status{position:absolute;top:24px;right:24px;font-family:'Geist Mono',monospace;font-size:.48rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);opacity:.6;}
+
+/* Meta */
+.div-meta{display:flex;flex-direction:column;gap:0;}
+.meta-label{font-family:'Geist Mono',monospace;font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:32px;}
+.focus-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);font-size:.8rem;color:var(--dim);}
+.focus-item:first-of-type{border-top:1px solid var(--border);}
+.focus-item::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:.5;flex-shrink:0;}
+.div-stats{display:flex;gap:40px;margin-top:48px;}
+.ds-n{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;line-height:1;}
+.ds-n span{color:var(--gold);}
+.ds-l{font-family:'Geist Mono',monospace;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:6px;}
+
+/* CTA */
+.page-cta{padding:120px var(--pad);text-align:center;position:relative;overflow:hidden;}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:300px;border-radius:50%;background:radial-gradient(ellipse,rgba(184,150,90,.05) 0%,transparent 70%);pointer-events:none;}
+.cta-label{font-family:'Geist Mono',monospace;font-size:.55rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:36px;display:flex;align-items:center;justify-content:center;gap:16px;}
+.cta-label::before,.cta-label::after{content:'';width:24px;height:1px;background:var(--gold);display:block;}
+.cta-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,60px);font-weight:300;line-height:1.1;max-width:560px;margin:0 auto 48px;}
+.cta-h2 i{font-style:italic;color:var(--gold);}
+.cta-btns{display:flex;gap:14px;justify-content:center;}
+.btn-g{font-family:'Outfit',sans-serif;font-weight:400;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:15px 38px;background:var(--gold);color:#080808;text-decoration:none;transition:opacity .2s,transform .2s;display:inline-block;}
+.btn-g:hover{opacity:.85;transform:translateY(-2px);}
+.btn-o{font-family:'Outfit',sans-serif;font-weight:400;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:15px 38px;background:transparent;color:var(--fg);border:1px solid var(--border);text-decoration:none;display:inline-block;transition:border-color .2s,transform .2s;}
+.btn-o:hover{border-color:rgba(239,239,235,.28);transform:translateY(-2px);}
+
+footer{padding:36px var(--pad);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.f-logo{font-family:'Geist Mono',monospace;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--fg);text-decoration:none;}
+.f-logo b{color:var(--gold);}
+.f-copy{font-family:'Geist Mono',monospace;font-size:.48rem;letter-spacing:.15em;color:var(--dim);}
+.f-links{display:flex;gap:28px;list-style:none;}
+.f-links a{font-family:'Geist Mono',monospace;font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .2s;}
+.f-links a:hover{color:var(--fg);}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s ease;}
+.reveal.on{opacity:1;transform:translateY(0);}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-ring"></div>
+
+<nav>
+  <a class="logo" href="miii-index.html"><b>MIII</b>&nbsp;&nbsp;Holdings</a>
+  <div class="nav-r">
+    <ul class="nav-links">
+      <li><a href="miii-about.html">About</a></li>
+      <li><a href="miii-ventures.html" class="active">Ventures</a></li>
+      <li><a href="miii-team.html">Team</a></li>
+      <li><a href="miii-contact.html">Contact</a></li>
+    </ul>
+    <a class="nav-btn" href="miii-contact.html">Inquire</a>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="ph-grid">
+    <div>
+      <div class="ph-eyebrow">MIII Holdings · Portfolio</div>
+      <h1 class="ph-h1">Our<br><i>Ventures</i></h1>
+    </div>
+    <div class="ph-right">
+      <p class="ph-desc">Five divisions. Sixteen active projects. One unified operating system. Each venture is built on shared AI-native infrastructure — designed to compound simultaneously across every vertical.</p>
+      <div class="ph-jump">
+        <a class="ph-jump-item" href="#media"><span class="pjnum">01</span><span class="pjn">Media</span><span class="pja">↓</span></a>
+        <a class="ph-jump-item" href="#service"><span class="pjnum">02</span><span class="pjn">Service</span><span class="pja">↓</span></a>
+        <a class="ph-jump-item" href="#technology"><span class="pjnum">03</span><span class="pjn">Technology</span><span class="pja">↓</span></a>
+        <a class="ph-jump-item" href="#retail"><span class="pjnum">04</span><span class="pjn">Retail</span><span class="pja">↓</span></a>
+        <a class="ph-jump-item" href="#studios"><span class="pjnum">05</span><span class="pjn">MIII Studios</span><span class="pja">↓</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MEDIA -->
+<div class="div-section" id="media">
+  <div class="ds-top reveal">
+    <div class="ds-num">01 —</div>
+    <div>
+      <h2 class="ds-title"><i>Media</i></h2>
+      <p class="ds-tagline">Publishing ecosystems, editorial brands, and content infrastructure engineered for reach, authority, and long-term monetization. The media division is MIII's public-facing engine — building audience, trust, and deal flow simultaneously.</p>
+    </div>
+  </div>
+  <div class="ds-body">
+    <div class="reveal">
+      <div class="proj-label">Projects</div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">Top Boss Talk</div><div class="proj-desc">Global entrepreneurial media brand across Medium, Substack, and X. Primary publishing funnel with a large follower base — daily content across Technology, Travel, and Leadership.</div><div class="proj-tag live">● Live</div></div></div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">Bossier Magazine</div><div class="proj-desc">Premium PDF editorial publication distributed via Payhip on a pay-what-you-want model, targeting ambitious future entrepreneurs with depth-first storytelling.</div><div class="proj-tag live">● Live</div></div></div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">Bossier Membership Portal</div><div class="proj-desc">Premium community access layer gating exclusive editorial, founder resources, and network access for the Bossier ecosystem.</div><div class="proj-tag live">● Live</div></div></div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">Bossier TV</div><div class="proj-desc">Video content vertical powered by the TBT Network — extending editorial reach into long-form and short-form video formats.</div><div class="proj-tag build">○ Building</div></div></div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">Top Boss Playbook Quarterly</div><div class="proj-desc">Recurring editorial product with monetization through sponsored placements, subscriptions, and premium access tiers.</div><div class="proj-tag build">○ Building</div></div></div>
+    </div>
+    <div class="div-meta reveal d1">
+      <div class="meta-label">Division Focus</div>
+      <div class="focus-item">Audience building &amp; editorial authority</div>
+      <div class="focus-item">AI-assisted publishing pipelines</div>
+      <div class="focus-item">Cross-platform content syndication</div>
+      <div class="focus-item">Founder discovery &amp; deal flow via media</div>
+      <div class="focus-item">Subscription &amp; premium monetization</div>
+      <div class="focus-item">Sponsored content &amp; brand partnerships</div>
+      <div class="div-stats">
+        <div><div class="ds-n">5</div><div class="ds-l">Projects</div></div>
+        <div><div class="ds-n">3<span>+</span></div><div class="ds-l">Platforms</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICE -->
+<div class="div-section" id="service">
+  <div class="ds-top reveal">
+    <div class="ds-num">02 —</div>
+    <div>
+      <h2 class="ds-title"><i>Service</i></h2>
+      <p class="ds-tagline">B2B and B2C service ventures powered by automation, AI-driven operations, and outcome-focused delivery. This division monetizes MIII's operational expertise — turning internal infrastructure into external revenue.</p>
+    </div>
+  </div>
+  <div class="ds-body">
+    <div class="reveal">
+      <div class="proj-label">Projects</div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">Consulting &amp; Advisory</div><div class="proj-desc">Strategic advisory for founders and operators looking to implement AI-native systems, automation workflows, and scalable media infrastructure from scratch.</div><div class="proj-tag build">○ Development</div></div></div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">Done-For-You Automation</div><div class="proj-desc">End-to-end automation builds for clients — custom n8n workflows, outreach pipelines, content systems, and agent architectures deployed and managed.</div><div class="proj-tag build">○ Development</div></div></div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">Founder Outreach Services</div><div class="proj-desc">Productized outreach and lead generation built on the same intelligence stack powering MIII's internal Founder Intelligence System.</div><div class="proj-tag build">○ Development</div></div></div>
+    </div>
+    <div class="div-meta reveal d1">
+      <div class="meta-label">Division Focus</div>
+      <div class="focus-item">AI systems consulting &amp; implementation</div>
+      <div class="focus-item">Automation-as-a-service delivery</div>
+      <div class="focus-item">Productized service offerings</div>
+      <div class="focus-item">Retainer-based client relationships</div>
+      <div class="focus-item">Founder &amp; operator market</div>
+      <div class="div-stats">
+        <div><div class="ds-n">3</div><div class="ds-l">Projects</div></div>
+        <div><div class="ds-n">B2B</div><div class="ds-l">Primary Market</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TECHNOLOGY -->
+<div class="div-section" id="technology">
+  <div class="ds-top reveal">
+    <div class="ds-num">03 —</div>
+    <div>
+      <h2 class="ds-title"><i>Technology</i></h2>
+      <p class="ds-tagline">AI infrastructure, PropTech, automation pipelines, and data aggregation — the engine room powering every other division. The technology arm is not just a business unit; it is the operating layer of the entire MIII portfolio.</p>
+    </div>
+  </div>
+  <div class="ds-body">
+    <div class="reveal">
+      <div class="proj-label">Projects</div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">TBTBUILD1 Agent OS</div><div class="proj-desc">Multi-agent architecture with role-based specialization across Content, SEO, Social, Outreach, Analytics, Email, Monetization, and PR — coordinated via a central task tracker with KPI escalation logic.</div><div class="proj-tag live">● Live</div></div></div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">Founder Intelligence System V2</div><div class="proj-desc">Autonomous daily discovery engine with weighted scoring (story, timing, brand fit, revenue, credibility), persistent SQLite memory, deduplication, outreach generation, and dashboard infrastructure.</div><div class="proj-tag live">● Live</div></div></div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">TBT BossBot</div><div class="proj-desc">WhatsApp community chatbot with welcome flows, article drops, AI summaries, and premium conversion funnels for community engagement and monetization.</div><div class="proj-tag live">● Live</div></div></div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">TBT LeadOps Workflow</div><div class="proj-desc">n8n + Apify pipeline pulling from LinkedIn, Instagram, Crunchbase, RSS, and event sources — feeding into CRM tagging and automated outreach sequences with daily scheduled runs.</div><div class="proj-tag live">● Live</div></div></div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">MIII PropTech Division</div><div class="proj-desc">AI-powered property technology targeting data aggregation, market intelligence, and automated deal sourcing in the real estate sector.</div><div class="proj-tag build">○ Building</div></div></div>
+    </div>
+    <div class="div-meta reveal d1">
+      <div class="meta-label">Division Focus</div>
+      <div class="focus-item">Multi-agent AI orchestration</div>
+      <div class="focus-item">Autonomous workflow engineering</div>
+      <div class="focus-item">Founder intelligence &amp; discovery</div>
+      <div class="focus-item">PropTech &amp; real estate intelligence</div>
+      <div class="focus-item">Private AI stack development</div>
+      <div class="focus-item">Portfolio-wide data infrastructure</div>
+      <div class="div-stats">
+        <div><div class="ds-n">5</div><div class="ds-l">Projects</div></div>
+        <div><div class="ds-n">4</div><div class="ds-l">Live Systems</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RETAIL -->
+<div class="div-section" id="retail">
+  <div class="ds-top reveal">
+    <div class="ds-num">04 —</div>
+    <div>
+      <h2 class="ds-title"><i>Retail</i></h2>
+      <p class="ds-tagline">Product-led commerce ventures applying MIII's automation and data infrastructure to physical and digital product channels — intelligent inventory, omnichannel distribution, and AI-driven customer lifecycle management.</p>
+    </div>
+  </div>
+  <div class="ds-body">
+    <div class="reveal">
+      <div class="proj-label">Projects</div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">E-Commerce Ventures</div><div class="proj-desc">AI-powered product commerce with automated inventory management, pricing intelligence, and multi-channel distribution across owned and third-party platforms.</div><div class="proj-tag build">○ Development</div></div></div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">Product Development</div><div class="proj-desc">Data-driven product creation pipeline — using audience signals from the Media division to identify, validate, and launch consumer product opportunities.</div><div class="proj-tag build">○ Development</div></div></div>
+      <div class="proj-item"><div class="proj-dot"></div><div class="proj-info"><div class="proj-name">Distribution Channels</div><div class="proj-desc">Omnichannel infrastructure connecting owned platforms, third-party marketplaces, and direct-to-consumer channels — automated end-to-end.</div><div class="proj-tag build">○ Development</div></div></div>
+    </div>
+    <div class="div-meta reveal d1">
+      <div class="meta-label">Division Focus</div>
+      <div class="focus-item">AI-assisted product selection &amp; pricing</div>
+      <div class="focus-item">Automated inventory &amp; fulfilment</div>
+      <div class="focus-item">Multi-channel commerce infrastructure</div>
+      <div class="focus-item">Customer lifecycle automation</div>
+      <div class="focus-item">Media-to-commerce conversion funnels</div>
+      <div class="div-stats">
+        <div><div class="ds-n">3</div><div class="ds-l">Projects</div></div>
+        <div><div class="ds-n">D2C</div><div class="ds-l">Primary Model</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MIII STUDIOS -->
+<div class="div-section" id="studios">
+  <div class="ds-top reveal">
+    <div class="ds-num">05 —</div>
+    <div>
+      <h2 class="ds-title"><i>MIII Studios</i></h2>
+      <p class="ds-tagline">Music, entertainment, and creative content — an independent label, artist development arm, and cultural production house. MIII Studios treats creative expression as strategic capital: building catalog, culture, and long-term brand equity across music, media, and entertainment.</p>
+    </div>
+  </div>
+
+  <!-- FULL WIDTH roster + meta -->
+  <div style="padding-left:120px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-bottom:64px;">
+      <div class="reveal">
+        <div class="proj-label">Label Roster</div>
+
+        <div class="roster-grid">
+          <div class="roster-card">
+            <div class="rc-genre">Hip-Hop / R&amp;B</div>
+            <div class="rc-name">Artist One</div>
+            <div class="rc-desc">Rising voice with cross-platform reach and a developing signature sound. Currently in active recording and branding development.</div>
+            <div class="rc-status">Signed</div>
+          </div>
+          <div class="roster-card">
+            <div class="rc-genre">Afrobeats / Pop</div>
+            <div class="rc-name">Artist Two</div>
+            <div class="rc-desc">Internationally influenced artist blending African rhythms with contemporary production for a global market.</div>
+            <div class="rc-status">Signed</div>
+          </div>
+          <div class="roster-card">
+            <div class="rc-genre">Electronic / Alternative</div>
+            <div class="rc-name">Artist Three</div>
+            <div class="rc-desc">Experimental producer and performer building a cult following through limited drops and immersive live experiences.</div>
+            <div class="rc-status">Signed</div>
+          </div>
+          <div class="roster-card">
+            <div class="rc-genre">Open</div>
+            <div class="rc-name">Roster Slot</div>
+            <div class="rc-desc">MIII Studios actively scouts independent artists with a distinct creative vision, a developing audience, and long-term commercial potential.</div>
+            <div class="rc-status">Scouting</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="div-meta reveal d1">
+        <div class="meta-label">Division Focus</div>
+        <div class="focus-item">Independent label operations &amp; A&amp;R</div>
+        <div class="focus-item">Artist development &amp; branding</div>
+        <div class="focus-item">Music production &amp; catalog ownership</div>
+        <div class="focus-item">Sync licensing &amp; placement</div>
+        <div class="focus-item">Entertainment content development</div>
+        <div class="focus-item">Brand partnerships &amp; creative campaigns</div>
+        <div class="focus-item">Cross-divisional media integration</div>
+        <div class="div-stats">
+          <div><div class="ds-n">4<span>+</span></div><div class="ds-l">Roster</div></div>
+          <div><div class="ds-n">∞</div><div class="ds-l">Catalog</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Studios sub-ventures -->
+    <div class="reveal">
+      <div class="proj-label" style="margin-bottom:32px;">Studio Initiatives</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);">
+        <div style="padding:36px 32px;background:#080808;transition:background .2s;" onmouseenter="this.style.background='#111'" onmouseleave="this.style.background='#080808'">
+          <div style="font-family:'Geist Mono',monospace;font-size:.48rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Label</div>
+          <div style="font-size:.9rem;font-weight:400;margin-bottom:10px;">MIII Records</div>
+          <div style="font-size:.76rem;line-height:1.65;color:var(--dim);">Independent label arm focused on artist signing, catalog development, distribution deals, and royalty management across streaming platforms.</div>
+        </div>
+        <div style="padding:36px 32px;background:#080808;transition:background .2s;" onmouseenter="this.style.background='#111'" onmouseleave="this.style.background='#080808'">
+          <div style="font-family:'Geist Mono',monospace;font-size:.48rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Production</div>
+          <div style="font-size:.9rem;font-weight:400;margin-bottom:10px;">Creative Production</div>
+          <div style="font-size:.76rem;line-height:1.65;color:var(--dim);">Music video production, visual branding, content creation, and multimedia campaign development for roster artists and brand partnerships.</div>
+        </div>
+        <div style="padding:36px 32px;background:#080808;transition:background .2s;" onmouseenter="this.style.background='#111'" onmouseleave="this.style.background='#080808'">
+          <div style="font-family:'Geist Mono',monospace;font-size:.48rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Sync &amp; Licensing</div>
+          <div style="font-size:.9rem;font-weight:400;margin-bottom:10px;">Sync &amp; Placement</div>
+          <div style="font-size:.76rem;line-height:1.65;color:var(--dim);">Catalog licensing for film, television, advertising, and digital media — building recurring sync revenue alongside streaming performance.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="page-cta">
+  <div class="cta-glow"></div>
+  <div class="cta-label reveal">Partner With MIII</div>
+  <h2 class="cta-h2 reveal">Interested in the portfolio<br>or <i>MIII Studios?</i></h2>
+  <div class="cta-btns reveal">
+    <a class="btn-g" href="miii-contact.html">Start a Conversation</a>
+    <a class="btn-o" href="miii-about.html">About MIII</a>
+  </div>
+</div>
+
+<footer>
+  <a class="f-logo" href="miii-index.html"><b>MIII</b>&nbsp;&nbsp;Holdings</a>
+  <div class="f-copy">© 2026 MIII Holdings · Toronto, Canada</div>
+  <ul class="f-links">
+    <li><a href="miii-about.html">About</a></li>
+    <li><a href="miii-ventures.html">Ventures</a></li>
+    <li><a href="miii-team.html">Team</a></li>
+    <li><a href="miii-contact.html">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.roster-card,.proj-item').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='46px';ring.style.height='46px';ring.style.borderColor='rgba(184,150,90,.65)';});
+  el.addEventListener('mouseleave',()=>{ring.style.width='28px';ring.style.height='28px';ring.style.borderColor='rgba(184,150,90,.4)';});
+});
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);}}),{threshold:.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

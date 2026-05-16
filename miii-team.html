@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team — MIII Holdings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Geist+Mono:wght@300;400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#080808;--fg:#EFEFEB;--gold:#B8965A;--gold-dim:rgba(184,150,90,.12);--dim:rgba(239,239,235,.35);--border:rgba(239,239,235,.08);--pad:64px;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--fg);font-family:'Outfit',sans-serif;font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none;}
+#cur{position:fixed;width:5px;height:5px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+#cur-ring{position:fixed;width:28px;height:28px;border:1px solid rgba(184,150,90,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:28px var(--pad);display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.logo{font-family:'Geist Mono',monospace;font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--fg);text-decoration:none;}
+.logo b{color:var(--gold);}
+.nav-r{display:flex;align-items:center;gap:48px;}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{font-family:'Geist Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--fg);}
+.nav-btn{font-family:'Geist Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(184,150,90,.3);padding:10px 22px;text-decoration:none;background:none;transition:background .2s;}
+.nav-btn:hover{background:var(--gold-dim);}
+
+/* HEADER */
+.page-header{padding:160px var(--pad) 120px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.ph-glow{position:absolute;bottom:-20%;left:-10%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(184,150,90,.04) 0%,transparent 65%);pointer-events:none;}
+.ph-eyebrow{font-family:'Geist Mono',monospace;font-size:.55rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;display:flex;align-items:center;gap:16px;opacity:0;animation:up .9s .1s forwards;}
+.ph-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold);display:block;}
+.ph-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,6.5vw,92px);font-weight:300;line-height:1.03;opacity:0;animation:up 1s .25s forwards;}
+.ph-h1 i{font-style:italic;color:var(--gold);}
+.ph-sub{font-size:.9rem;line-height:1.85;color:var(--dim);max-width:560px;margin-top:36px;opacity:0;animation:up .9s .4s forwards;}
+
+/* LEADERSHIP */
+.section{padding:120px var(--pad);}
+.s-label{font-family:'Geist Mono',monospace;font-size:.52rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:72px;display:flex;align-items:center;gap:16px;}
+.s-label::before{content:attr(data-n);color:rgba(184,150,90,.35);}
+
+/* FOUNDER CARD */
+.founder-block{display:grid;grid-template-columns:1fr 1fr;gap:120px;align-items:center;margin-bottom:120px;}
+.founder-visual{position:relative;aspect-ratio:4/5;background:linear-gradient(135deg,#111 0%,#0C0C0A 100%);border:1px solid var(--border);overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.founder-monogram{font-family:'Cormorant Garamond',serif;font-size:clamp(80px,12vw,140px);font-weight:300;color:rgba(184,150,90,.15);line-height:1;}
+.founder-visual-label{position:absolute;bottom:24px;left:24px;font-family:'Geist Mono',monospace;font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);}
+.founder-content h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,3.5vw,52px);font-weight:300;line-height:1.1;margin-bottom:8px;}
+.founder-content h2 i{font-style:italic;color:var(--gold);}
+.founder-role{font-family:'Geist Mono',monospace;font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:32px;}
+.founder-bio{font-size:.86rem;line-height:1.9;color:var(--dim);margin-bottom:48px;}
+.founder-tags{display:flex;flex-wrap:wrap;gap:10px;}
+.f-tag{font-family:'Geist Mono',monospace;font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;padding:7px 16px;border:1px solid var(--border);color:var(--dim);}
+
+/* DIVISION LEADS */
+.div-leads{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.lead-card{background:var(--bg);padding:40px 28px;transition:background .2s;position:relative;}
+.lead-card:hover{background:#111;}
+.lead-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1);}
+.lead-card:hover::after{transform:scaleX(1);}
+.lc-div{font-family:'Geist Mono',monospace;font-size:.48rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;}
+.lc-monogram{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:rgba(184,150,90,.2);line-height:1;margin-bottom:16px;}
+.lc-title{font-size:.82rem;font-weight:500;margin-bottom:8px;}
+.lc-desc{font-size:.72rem;line-height:1.65;color:var(--dim);}
+
+/* CULTURE */
+.culture-section{background:#0C0C0A;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.culture-grid{display:grid;grid-template-columns:1fr 1fr;gap:120px;align-items:center;}
+.culture-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,3.2vw,48px);font-weight:300;line-height:1.15;margin-bottom:32px;}
+.culture-left h2 i{font-style:italic;color:var(--gold);}
+.culture-left p{font-size:.84rem;line-height:1.85;color:var(--dim);margin-bottom:20px;}
+.culture-right{display:flex;flex-direction:column;}
+.culture-item{padding:24px 0;border-bottom:1px solid var(--border);display:flex;gap:20px;align-items:flex-start;}
+.culture-item:first-child{border-top:1px solid var(--border);}
+.ci-num{font-family:'Geist Mono',monospace;font-size:.52rem;letter-spacing:.2em;color:var(--gold);min-width:24px;padding-top:2px;}
+.ci-h{font-size:.86rem;font-weight:500;margin-bottom:6px;}
+.ci-p{font-size:.76rem;line-height:1.7;color:var(--dim);}
+
+/* JOIN */
+.join-section{padding:120px var(--pad);border-top:none;}
+.join-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-bottom:80px;}
+.join-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,3.5vw,52px);font-weight:300;line-height:1.12;margin-bottom:20px;}
+.join-left h2 i{font-style:italic;color:var(--gold);}
+.join-left p{font-size:.84rem;line-height:1.85;color:var(--dim);}
+.open-roles{display:flex;flex-direction:column;}
+.role-item{padding:24px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;text-decoration:none;transition:padding-left .2s;}
+.role-item:first-child{border-top:1px solid var(--border);}
+.role-item:hover{padding-left:12px;}
+.role-item:hover .ri-title{color:var(--gold);}
+.ri-left{display:flex;flex-direction:column;gap:4px;}
+.ri-title{font-size:.9rem;font-weight:400;color:var(--fg);transition:color .2s;}
+.ri-div{font-family:'Geist Mono',monospace;font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);}
+.ri-type{font-family:'Geist Mono',monospace;font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);}
+
+/* CTA */
+.page-cta{padding:120px var(--pad);text-align:center;border-top:1px solid var(--border);position:relative;overflow:hidden;}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:300px;border-radius:50%;background:radial-gradient(ellipse,rgba(184,150,90,.05) 0%,transparent 70%);pointer-events:none;}
+.cta-label{font-family:'Geist Mono',monospace;font-size:.55rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:36px;display:flex;align-items:center;justify-content:center;gap:16px;}
+.cta-label::before,.cta-label::after{content:'';width:24px;height:1px;background:var(--gold);display:block;}
+.cta-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,60px);font-weight:300;line-height:1.1;max-width:560px;margin:0 auto 48px;}
+.cta-h2 i{font-style:italic;color:var(--gold);}
+.cta-btns{display:flex;gap:14px;justify-content:center;}
+.btn-g{font-family:'Outfit',sans-serif;font-weight:400;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:15px 38px;background:var(--gold);color:#080808;text-decoration:none;transition:opacity .2s,transform .2s;display:inline-block;}
+.btn-g:hover{opacity:.85;transform:translateY(-2px);}
+.btn-o{font-family:'Outfit',sans-serif;font-weight:400;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:15px 38px;background:transparent;color:var(--fg);border:1px solid var(--border);text-decoration:none;display:inline-block;transition:border-color .2s,transform .2s;}
+.btn-o:hover{border-color:rgba(239,239,235,.28);transform:translateY(-2px);}
+
+footer{padding:36px var(--pad);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.f-logo{font-family:'Geist Mono',monospace;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--fg);text-decoration:none;}
+.f-logo b{color:var(--gold);}
+.f-copy{font-family:'Geist Mono',monospace;font-size:.48rem;letter-spacing:.15em;color:var(--dim);}
+.f-links{display:flex;gap:28px;list-style:none;}
+.f-links a{font-family:'Geist Mono',monospace;font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .2s;}
+.f-links a:hover{color:var(--fg);}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s ease;}
+.reveal.on{opacity:1;transform:translateY(0);}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-ring"></div>
+
+<nav>
+  <a class="logo" href="miii-index.html"><b>MIII</b>&nbsp;&nbsp;Holdings</a>
+  <div class="nav-r">
+    <ul class="nav-links">
+      <li><a href="miii-about.html">About</a></li>
+      <li><a href="miii-ventures.html">Ventures</a></li>
+      <li><a href="miii-team.html" class="active">Team</a></li>
+      <li><a href="miii-contact.html">Contact</a></li>
+    </ul>
+    <a class="nav-btn" href="miii-contact.html">Inquire</a>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="ph-glow"></div>
+  <div class="ph-eyebrow">MIII Holdings · People</div>
+  <h1 class="ph-h1">The <i>minds</i><br>behind the machine.</h1>
+  <p class="ph-sub">MIII Holdings is operator-led. Every system, every venture, and every decision is driven by people who build — not just advise. We are a small, high-conviction team with a large operational footprint.</p>
+</div>
+
+<!-- LEADERSHIP -->
+<section class="section">
+  <div class="s-label reveal" data-n="01 —">Leadership</div>
+  <div class="founder-block">
+    <div class="founder-visual reveal">
+      <div class="founder-monogram">M</div>
+      <div class="founder-visual-label">Founder &amp; Managing Partner</div>
+    </div>
+    <div class="founder-content reveal d1">
+      <h2>Founder &amp;<br><i>Managing Partner</i></h2>
+      <div class="founder-role">MIII Holdings · Toronto, Canada</div>
+      <p class="founder-bio">The founder of MIII Holdings is a Toronto-based entrepreneur and systems architect operating at the intersection of technology, media, and creative culture. With a portfolio spanning sixteen active projects across five verticals, the thesis is simple: build infrastructure first, then let the businesses compound on top of it.</p>
+      <p class="founder-bio">MIII Holdings was founded on the conviction that AI-native systems — not headcount — are the defining competitive advantage of this era. Every venture in the portfolio reflects that belief.</p>
+      <div class="founder-tags">
+        <span class="f-tag">Systems Architecture</span>
+        <span class="f-tag">AI Infrastructure</span>
+        <span class="f-tag">Media &amp; Publishing</span>
+        <span class="f-tag">Music &amp; Entertainment</span>
+        <span class="f-tag">PropTech</span>
+        <span class="f-tag">Automation</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="s-label reveal" data-n="02 —">Division Leadership</div>
+  <div class="div-leads reveal">
+    <div class="lead-card">
+      <div class="lc-div">Media</div>
+      <div class="lc-monogram">M</div>
+      <div class="lc-title">Media Division Lead</div>
+      <div class="lc-desc">Overseeing publishing operations, editorial strategy, and monetization across Top Boss Talk, Bossier, and all TBT Network properties.</div>
+    </div>
+    <div class="lead-card">
+      <div class="lc-div">Service</div>
+      <div class="lc-monogram">S</div>
+      <div class="lc-title">Service Division Lead</div>
+      <div class="lc-desc">Leading consulting, automation delivery, and founder outreach service operations — translating MIII's infrastructure into external revenue.</div>
+    </div>
+    <div class="lead-card">
+      <div class="lc-div">Technology</div>
+      <div class="lc-monogram">T</div>
+      <div class="lc-title">Technology Division Lead</div>
+      <div class="lc-desc">Architecting and maintaining the AI-native systems, agent pipelines, and data infrastructure powering the entire MIII portfolio.</div>
+    </div>
+    <div class="lead-card">
+      <div class="lc-div">Retail</div>
+      <div class="lc-monogram">R</div>
+      <div class="lc-title">Retail Division Lead</div>
+      <div class="lc-desc">Building product-led commerce operations — from sourcing and inventory intelligence to omnichannel distribution and customer lifecycle systems.</div>
+    </div>
+    <div class="lead-card">
+      <div class="lc-div">MIII Studios</div>
+      <div class="lc-monogram">A</div>
+      <div class="lc-title">A&amp;R / Creative Director</div>
+      <div class="lc-desc">Leading artist development, label operations, creative production, and sync licensing across the MIII Studios roster and entertainment portfolio.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CULTURE -->
+<section class="section culture-section">
+  <div class="s-label reveal" data-n="03 —">How We Work</div>
+  <div class="culture-grid">
+    <div class="culture-left reveal">
+      <h2>Small team.<br><i>Outsized output.</i></h2>
+      <p>MIII Holdings does not scale through headcount. We scale through systems. Every hire is a force multiplier — someone who builds, owns, and operates with a level of autonomy that most companies reserve for senior leadership.</p>
+      <p>We are remote-first, operator-obsessed, and deeply aligned on one belief: infrastructure outlasts everything else.</p>
+    </div>
+    <div class="culture-right reveal d1">
+      <div class="culture-item"><span class="ci-num">01</span><div><div class="ci-h">Operators, Not Employees</div><div class="ci-p">Every team member owns a system, not a task. We hire for judgment, not compliance.</div></div></div>
+      <div class="culture-item"><span class="ci-num">02</span><div><div class="ci-h">Remote &amp; Autonomous</div><div class="ci-p">Geography is irrelevant. Results are everything. Our systems are built to enable execution from anywhere.</div></div></div>
+      <div class="culture-item"><span class="ci-num">03</span><div><div class="ci-h">Cross-Division by Default</div><div class="ci-p">Ideas and output flow freely across divisions. The media team informs the studio. Technology serves everyone.</div></div></div>
+      <div class="culture-item"><span class="ci-num">04</span><div><div class="ci-h">AI-Augmented Always</div><div class="ci-p">Every role uses AI as infrastructure. We don't work around our tools — we build them, then work through them.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- OPEN ROLES -->
+<section class="join-section">
+  <div class="s-label reveal" data-n="04 —">Open Roles</div>
+  <div class="join-grid">
+    <div class="join-left reveal">
+      <h2>Build with<br><i>MIII.</i></h2>
+      <p>We are always looking for operators, builders, and creatives who think in systems. If you are exceptional at what you do and want to work inside a company that treats AI as infrastructure and culture as capital — let's talk.</p>
+    </div>
+    <div class="open-roles reveal d1">
+      <a class="role-item" href="miii-contact.html">
+        <div class="ri-left"><div class="ri-title">AI Systems Engineer</div><div class="ri-div">Technology Division</div></div>
+        <div class="ri-type">Remote · Full-Time</div>
+      </a>
+      <a class="role-item" href="miii-contact.html">
+        <div class="ri-left"><div class="ri-title">Editorial &amp; Content Strategist</div><div class="ri-div">Media Division</div></div>
+        <div class="ri-type">Remote · Full-Time</div>
+      </a>
+      <a class="role-item" href="miii-contact.html">
+        <div class="ri-left"><div class="ri-title">A&amp;R Representative</div><div class="ri-div">MIII Studios</div></div>
+        <div class="ri-type">Remote · Contract</div>
+      </a>
+      <a class="role-item" href="miii-contact.html">
+        <div class="ri-left"><div class="ri-title">Automation Specialist</div><div class="ri-div">Service Division</div></div>
+        <div class="ri-type">Remote · Contract</div>
+      </a>
+      <a class="role-item" href="miii-contact.html">
+        <div class="ri-left"><div class="ri-title">Open Application</div><div class="ri-div">All Divisions</div></div>
+        <div class="ri-type">Remote · All Types</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="page-cta">
+  <div class="cta-glow"></div>
+  <div class="cta-label reveal">Join MIII</div>
+  <h2 class="cta-h2 reveal">Ready to build<br>something that <i>lasts?</i></h2>
+  <div class="cta-btns reveal">
+    <a class="btn-g" href="miii-contact.html">Get In Touch</a>
+    <a class="btn-o" href="miii-ventures.html">View Ventures</a>
+  </div>
+</div>
+
+<footer>
+  <a class="f-logo" href="miii-index.html"><b>MIII</b>&nbsp;&nbsp;Holdings</a>
+  <div class="f-copy">© 2026 MIII Holdings · Toronto, Canada</div>
+  <ul class="f-links">
+    <li><a href="miii-about.html">About</a></li>
+    <li><a href="miii-ventures.html">Ventures</a></li>
+    <li><a href="miii-team.html">Team</a></li>
+    <li><a href="miii-contact.html">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.lead-card,.role-item').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='46px';ring.style.height='46px';ring.style.borderColor='rgba(184,150,90,.65)';});
+  el.addEventListener('mouseleave',()=>{ring.style.width='28px';ring.style.height='28px';ring.style.borderColor='rgba(184,150,90,.4)';});
+});
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);}}),{threshold:.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

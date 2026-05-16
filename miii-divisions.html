@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Divisions — MIII Holdings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Geist+Mono:wght@300;400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:#080808; --fg:#EFEFEB; --gold:#B8965A;
+  --gold-dim:rgba(184,150,90,.12); --dim:rgba(239,239,235,.35);
+  --border:rgba(239,239,235,.08); --pad:64px;
+}
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--fg); font-family:'Outfit',sans-serif; font-weight:300; overflow-x:hidden; -webkit-font-smoothing:antialiased; cursor:none; }
+
+#cur { position:fixed; width:5px; height:5px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); }
+#cur-ring { position:fixed; width:28px; height:28px; border:1px solid rgba(184,150,90,.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .3s,height .3s,border-color .3s; }
+
+nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:32px var(--pad); display:flex; align-items:center; justify-content:space-between; background:rgba(8,8,8,.85); backdrop-filter:blur(24px); border-bottom:1px solid var(--border); }
+.logo { font-family:'Geist Mono',monospace; font-size:.68rem; font-weight:300; letter-spacing:.35em; text-transform:uppercase; color:var(--fg); text-decoration:none; }
+.logo b { color:var(--gold); font-weight:400; }
+.nav-r { display:flex; align-items:center; gap:48px; }
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-links a { font-family:'Geist Mono',monospace; font-size:.58rem; letter-spacing:.2em; text-transform:uppercase; color:var(--dim); text-decoration:none; transition:color .2s; }
+.nav-links a:hover,.nav-links a.active { color:var(--fg); }
+.nav-btn { font-family:'Geist Mono',monospace; font-size:.58rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); border:1px solid rgba(184,150,90,.3); padding:10px 22px; text-decoration:none; background:none; transition:background .2s,border-color .2s; }
+.nav-btn:hover { background:var(--gold-dim); border-color:var(--gold); }
+
+/* PAGE HEADER */
+.page-header {
+  padding:160px var(--pad) 100px;
+  border-bottom:1px solid var(--border);
+  display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:end;
+}
+.ph-left { }
+.ph-eyebrow { font-family:'Geist Mono',monospace; font-size:.55rem; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); margin-bottom:28px; display:flex; align-items:center; gap:16px; }
+.ph-eyebrow::before { content:''; width:24px; height:1px; background:var(--gold); display:block; }
+.ph-h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(48px,6vw,88px); font-weight:300; line-height:1.05; }
+.ph-h1 i { font-style:italic; color:var(--gold); }
+.ph-right { }
+.ph-desc { font-size:.88rem; line-height:1.85; color:var(--dim); margin-bottom:40px; }
+.ph-nav { display:flex; flex-direction:column; gap:0; }
+.ph-nav-item { display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid var(--border); text-decoration:none; transition:padding-left .2s; }
+.ph-nav-item:first-child { border-top:1px solid var(--border); }
+.ph-nav-item:hover { padding-left:8px; }
+.ph-nav-item:hover .ph-nav-name { color:var(--gold); }
+.ph-nav-n { font-family:'Geist Mono',monospace; font-size:.52rem; letter-spacing:.2em; color:var(--dim); }
+.ph-nav-name { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:300; color:var(--fg); transition:color .2s; }
+.ph-nav-arr { font-family:'Geist Mono',monospace; font-size:.55rem; color:var(--gold); opacity:0; transition:opacity .2s; }
+.ph-nav-item:hover .ph-nav-arr { opacity:1; }
+
+/* DIVISION SECTIONS */
+.division-section {
+  padding:120px var(--pad);
+  border-bottom:1px solid var(--border);
+  scroll-margin-top:80px;
+}
+.division-section:nth-child(even) { background:#0C0C0A; }
+
+.ds-header {
+  display:grid; grid-template-columns:80px 1fr; gap:48px; align-items:start;
+  margin-bottom:80px;
+}
+.ds-num {
+  font-family:'Geist Mono',monospace; font-size:.55rem; letter-spacing:.3em;
+  color:var(--gold); padding-top:12px;
+}
+.ds-title-block { }
+.ds-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(40px,5vw,72px); font-weight:300; line-height:1.05;
+  margin-bottom:20px;
+}
+.ds-title i { font-style:italic; color:var(--gold); }
+.ds-subtitle { font-size:.88rem; line-height:1.85; color:var(--dim); max-width:560px; }
+
+.ds-body {
+  display:grid; grid-template-columns:1fr 1fr; gap:80px;
+  padding-left:128px;
+}
+
+/* PROJECTS LIST */
+.ds-projects { }
+.ds-projects-label { font-family:'Geist Mono',monospace; font-size:.52rem; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); margin-bottom:32px; }
+.ds-project-item {
+  display:flex; align-items:flex-start; gap:20px;
+  padding:20px 0; border-bottom:1px solid var(--border);
+}
+.ds-project-item:first-of-type { border-top:1px solid var(--border); }
+.ds-proj-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); margin-top:7px; flex-shrink:0; opacity:.6; }
+.ds-proj-info { flex:1; }
+.ds-proj-name { font-size:.9rem; font-weight:400; margin-bottom:5px; }
+.ds-proj-desc { font-size:.76rem; line-height:1.65; color:var(--dim); }
+.ds-proj-tag { font-family:'Geist Mono',monospace; font-size:.48rem; letter-spacing:.15em; text-transform:uppercase; margin-top:8px; }
+.ds-proj-tag.live { color:var(--gold); }
+.ds-proj-tag.build { color:var(--dim); }
+
+/* DIVISION META */
+.ds-meta { }
+.ds-meta-label { font-family:'Geist Mono',monospace; font-size:.52rem; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); margin-bottom:32px; }
+.ds-focus-list { display:flex; flex-direction:column; gap:0; margin-bottom:56px; }
+.ds-focus-item { display:flex; align-items:center; gap:16px; padding:16px 0; border-bottom:1px solid var(--border); font-size:.82rem; color:var(--dim); }
+.ds-focus-item:first-child { border-top:1px solid var(--border); }
+.ds-focus-item::before { content:''; width:4px; height:4px; border-radius:50%; background:var(--gold); opacity:.5; flex-shrink:0; }
+
+.ds-stat-row { display:flex; gap:48px; }
+.ds-stat-n { font-family:'Cormorant Garamond',serif; font-size:2.8rem; font-weight:300; color:var(--fg); line-height:1; }
+.ds-stat-n span { color:var(--gold); }
+.ds-stat-l { font-family:'Geist Mono',monospace; font-size:.5rem; letter-spacing:.2em; text-transform:uppercase; color:var(--dim); margin-top:6px; }
+
+/* FOOTER CTA */
+.page-cta {
+  padding:120px var(--pad); text-align:center;
+  position:relative; overflow:hidden;
+}
+.cta-glow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:500px; height:300px; border-radius:50%; background:radial-gradient(ellipse,rgba(184,150,90,.05) 0%,transparent 70%); pointer-events:none; }
+.cta-label { font-family:'Geist Mono',monospace; font-size:.55rem; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); margin-bottom:36px; display:flex; align-items:center; justify-content:center; gap:16px; }
+.cta-label::before,.cta-label::after { content:''; width:24px; height:1px; background:var(--gold); display:block; }
+.cta-h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,4vw,60px); font-weight:300; line-height:1.1; max-width:580px; margin:0 auto 48px; }
+.cta-h2 i { font-style:italic; color:var(--gold); }
+.cta-btns { display:flex; gap:14px; justify-content:center; }
+.btn-g { font-family:'Outfit',sans-serif; font-weight:400; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; padding:15px 38px; background:var(--gold); color:#080808; text-decoration:none; transition:opacity .2s,transform .2s; display:inline-block; }
+.btn-g:hover { opacity:.85; transform:translateY(-2px); }
+.btn-o { font-family:'Outfit',sans-serif; font-weight:400; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; padding:15px 38px; background:transparent; color:var(--fg); border:1px solid var(--border); text-decoration:none; display:inline-block; transition:border-color .2s,transform .2s; }
+.btn-o:hover { border-color:rgba(239,239,235,.28); transform:translateY(-2px); }
+
+footer { padding:36px var(--pad); border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.f-logo { font-family:'Geist Mono',monospace; font-size:.62rem; letter-spacing:.3em; text-transform:uppercase; color:var(--fg); text-decoration:none; }
+.f-logo b { color:var(--gold); }
+.f-copy { font-family:'Geist Mono',monospace; font-size:.48rem; letter-spacing:.15em; color:var(--dim); }
+.f-links { display:flex; gap:28px; list-style:none; }
+.f-links a { font-family:'Geist Mono',monospace; font-size:.48rem; letter-spacing:.2em; text-transform:uppercase; color:var(--dim); text-decoration:none; transition:color .2s; }
+.f-links a:hover { color:var(--fg); }
+
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .9s ease,transform .9s ease; }
+.reveal.on { opacity:1; transform:translateY(0); }
+.d1 { transition-delay:.1s; } .d2 { transition-delay:.2s; }
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<nav>
+  <a class="logo" href="miii-holdings.html"><b>MIII</b>&nbsp;&nbsp;Holdings</a>
+  <div class="nav-r">
+    <ul class="nav-links">
+      <li><a href="miii-holdings.html#divisions" class="active">Divisions</a></li>
+      <li><a href="miii-holdings.html#portfolio">Portfolio</a></li>
+      <li><a href="miii-holdings.html#technology">Technology</a></li>
+    </ul>
+    <a class="nav-btn" href="miii-holdings.html#contact">Inquire</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header reveal">
+  <div class="ph-left">
+    <div class="ph-eyebrow">MIII Holdings</div>
+    <h1 class="ph-h1">Our<br><i>Divisions</i></h1>
+  </div>
+  <div class="ph-right">
+    <p class="ph-desc">Four verticals. One operating system. Every division runs on shared AI-native infrastructure — autonomous, interconnected, and built to compound simultaneously.</p>
+    <div class="ph-nav">
+      <a class="ph-nav-item" href="#media">
+        <span class="ph-nav-n">01</span>
+        <span class="ph-nav-name">Media</span>
+        <span class="ph-nav-arr">↓</span>
+      </a>
+      <a class="ph-nav-item" href="#service">
+        <span class="ph-nav-n">02</span>
+        <span class="ph-nav-name">Service</span>
+        <span class="ph-nav-arr">↓</span>
+      </a>
+      <a class="ph-nav-item" href="#technology">
+        <span class="ph-nav-n">03</span>
+        <span class="ph-nav-name">Technology</span>
+        <span class="ph-nav-arr">↓</span>
+      </a>
+      <a class="ph-nav-item" href="#retail">
+        <span class="ph-nav-n">04</span>
+        <span class="ph-nav-name">Retail</span>
+        <span class="ph-nav-arr">↓</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- MEDIA -->
+<div class="division-section" id="media">
+  <div class="ds-header reveal">
+    <div class="ds-num">01 —</div>
+    <div class="ds-title-block">
+      <h2 class="ds-title"><i>Media</i></h2>
+      <p class="ds-subtitle">Publishing ecosystems, editorial brands, and content infrastructure engineered for reach, authority, and monetization at scale. The media division is the public face of MIII — building audience, trust, and deal flow simultaneously.</p>
+    </div>
+  </div>
+  <div class="ds-body">
+    <div class="ds-projects reveal">
+      <div class="ds-projects-label">Active Projects</div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">Top Boss Talk</div>
+          <div class="ds-proj-desc">Global entrepreneurial media brand operating across Medium, Substack, and X. Primary content funnel with a large and growing follower base publishing daily across Technology, Travel, and Leadership.</div>
+          <div class="ds-proj-tag live">● Live</div>
+        </div>
+      </div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">Bossier Magazine</div>
+          <div class="ds-proj-desc">PDF publication distributed via Payhip on a pay-what-you-want model. Targets future entrepreneurs with editorial depth and premium cover stories.</div>
+          <div class="ds-proj-tag live">● Live</div>
+        </div>
+      </div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">Bossier Membership Portal</div>
+          <div class="ds-proj-desc">Premium community and content access layer for the Bossier ecosystem — gating exclusive editorial, resources, and network access.</div>
+          <div class="ds-proj-tag live">● Live</div>
+        </div>
+      </div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">Bossier TV</div>
+          <div class="ds-proj-desc">Video content vertical powered by the TBT Network — extending editorial reach into long-form and short-form video formats.</div>
+          <div class="ds-proj-tag build">○ Building</div>
+        </div>
+      </div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">Top Boss Playbook Quarterly</div>
+          <div class="ds-proj-desc">Recurring editorial product with monetization through sponsored placements, subscriptions, and premium access tiers.</div>
+          <div class="ds-proj-tag build">○ Building</div>
+        </div>
+      </div>
+    </div>
+    <div class="ds-meta reveal d1">
+      <div class="ds-meta-label">Division Focus</div>
+      <div class="ds-focus-list">
+        <div class="ds-focus-item">Audience building &amp; editorial authority</div>
+        <div class="ds-focus-item">AI-assisted publishing pipelines</div>
+        <div class="ds-focus-item">Cross-platform content syndication</div>
+        <div class="ds-focus-item">Founder discovery &amp; deal flow via media</div>
+        <div class="ds-focus-item">Subscription &amp; premium monetization</div>
+        <div class="ds-focus-item">Sponsored content &amp; brand partnerships</div>
+      </div>
+      <div class="ds-stat-row">
+        <div><div class="ds-stat-n">5</div><div class="ds-stat-l">Projects</div></div>
+        <div><div class="ds-stat-n">3<span>+</span></div><div class="ds-stat-l">Platforms</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICE -->
+<div class="division-section" id="service">
+  <div class="ds-header reveal">
+    <div class="ds-num">02 —</div>
+    <div class="ds-title-block">
+      <h2 class="ds-title"><i>Service</i></h2>
+      <p class="ds-subtitle">B2B and B2C service ventures powered by automation, AI-driven operations, and outcome-focused delivery. This division translates MIII's internal infrastructure expertise into external revenue streams.</p>
+    </div>
+  </div>
+  <div class="ds-body">
+    <div class="ds-projects reveal">
+      <div class="ds-projects-label">Active Projects</div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">Consulting &amp; Advisory</div>
+          <div class="ds-proj-desc">Strategic advisory for founders and operators looking to implement AI-native systems, automation workflows, and scalable media infrastructure.</div>
+          <div class="ds-proj-tag build">○ In Development</div>
+        </div>
+      </div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">Done-For-You Automation</div>
+          <div class="ds-proj-desc">End-to-end automation builds for clients — custom n8n workflows, outreach pipelines, content systems, and agent architectures deployed and managed.</div>
+          <div class="ds-proj-tag build">○ In Development</div>
+        </div>
+      </div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">Founder Outreach Services</div>
+          <div class="ds-proj-desc">Productized outreach and lead generation services built on the same intelligence stack powering MIII's internal founder discovery engine.</div>
+          <div class="ds-proj-tag build">○ In Development</div>
+        </div>
+      </div>
+    </div>
+    <div class="ds-meta reveal d1">
+      <div class="ds-meta-label">Division Focus</div>
+      <div class="ds-focus-list">
+        <div class="ds-focus-item">AI systems consulting &amp; implementation</div>
+        <div class="ds-focus-item">Automation-as-a-service delivery</div>
+        <div class="ds-focus-item">Productized service offerings</div>
+        <div class="ds-focus-item">Retainer-based client relationships</div>
+        <div class="ds-focus-item">Founder &amp; operator market</div>
+      </div>
+      <div class="ds-stat-row">
+        <div><div class="ds-stat-n">3</div><div class="ds-stat-l">Projects</div></div>
+        <div><div class="ds-stat-n">B2B<span>+</span></div><div class="ds-stat-l">Focus</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TECHNOLOGY -->
+<div class="division-section" id="technology">
+  <div class="ds-header reveal">
+    <div class="ds-num">03 —</div>
+    <div class="ds-title-block">
+      <h2 class="ds-title"><i>Technology</i></h2>
+      <p class="ds-subtitle">AI training, PropTech, automation pipelines, and data aggregation forming the backbone of the entire MIII stack. The technology division is the engine room — what every other vertical runs on.</p>
+    </div>
+  </div>
+  <div class="ds-body">
+    <div class="ds-projects reveal">
+      <div class="ds-projects-label">Active Projects</div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">TBTBUILD1 Agent OS</div>
+          <div class="ds-proj-desc">Multi-agent architecture powering Top Boss Talk — roles spanning Content Creation, SEO, Social, Outreach, Analytics, Email, Monetization, and PR, coordinated via a central task tracker with KPI tracking and escalation rules.</div>
+          <div class="ds-proj-tag live">● Live</div>
+        </div>
+      </div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">Founder Intelligence System V2</div>
+          <div class="ds-proj-desc">Autonomous daily founder discovery engine with weighted scoring across story, timing, brand fit, revenue, and credibility. Features persistent memory, deduplication, outreach generation, and dashboard infrastructure.</div>
+          <div class="ds-proj-tag live">● Live</div>
+        </div>
+      </div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">TBT BossBot</div>
+          <div class="ds-proj-desc">WhatsApp community chatbot for Top Boss Talk — welcome flows, article drops, AI summaries, and premium funnels for community engagement and monetization.</div>
+          <div class="ds-proj-tag live">● Live</div>
+        </div>
+      </div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">TBT LeadOps Workflow</div>
+          <div class="ds-proj-desc">n8n workflow system with outreach templates for automated founder discovery, scoring, CRM tagging, and outreach sequencing with scheduled daily runs via Apify actors.</div>
+          <div class="ds-proj-tag live">● Live</div>
+        </div>
+      </div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">MIII PropTech Division</div>
+          <div class="ds-proj-desc">AI-powered property technology ventures targeting data aggregation, market intelligence, and automated deal sourcing in the real estate sector.</div>
+          <div class="ds-proj-tag build">○ Building</div>
+        </div>
+      </div>
+    </div>
+    <div class="ds-meta reveal d1">
+      <div class="ds-meta-label">Division Focus</div>
+      <div class="ds-focus-list">
+        <div class="ds-focus-item">Multi-agent AI architecture</div>
+        <div class="ds-focus-item">Autonomous workflow engineering</div>
+        <div class="ds-focus-item">Founder intelligence &amp; discovery</div>
+        <div class="ds-focus-item">PropTech &amp; real estate data</div>
+        <div class="ds-focus-item">Private AI stack development</div>
+        <div class="ds-focus-item">Portfolio-wide data infrastructure</div>
+      </div>
+      <div class="ds-stat-row">
+        <div><div class="ds-stat-n">5</div><div class="ds-stat-l">Projects</div></div>
+        <div><div class="ds-stat-n">4<span>+</span></div><div class="ds-stat-l">Live Systems</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RETAIL -->
+<div class="division-section" id="retail">
+  <div class="ds-header reveal">
+    <div class="ds-num">04 —</div>
+    <div class="ds-title-block">
+      <h2 class="ds-title"><i>Retail</i></h2>
+      <p class="ds-subtitle">Product-led commerce ventures with intelligent inventory, distribution, and customer lifecycle systems. The retail division applies MIII's automation and data infrastructure to physical and digital product channels.</p>
+    </div>
+  </div>
+  <div class="ds-body">
+    <div class="ds-projects reveal">
+      <div class="ds-projects-label">Active Projects</div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">E-Commerce Ventures</div>
+          <div class="ds-proj-desc">AI-powered product commerce operations with automated inventory management, pricing intelligence, and multi-channel distribution.</div>
+          <div class="ds-proj-tag build">○ In Development</div>
+        </div>
+      </div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">Product Development</div>
+          <div class="ds-proj-desc">Data-driven product creation pipeline — using audience signals from the Media division to identify and validate consumer product opportunities.</div>
+          <div class="ds-proj-tag build">○ In Development</div>
+        </div>
+      </div>
+      <div class="ds-project-item">
+        <div class="ds-proj-dot"></div>
+        <div class="ds-proj-info">
+          <div class="ds-proj-name">Distribution Channels</div>
+          <div class="ds-proj-desc">Omnichannel distribution infrastructure connecting owned platforms, third-party marketplaces, and direct-to-consumer channels.</div>
+          <div class="ds-proj-tag build">○ In Development</div>
+        </div>
+      </div>
+    </div>
+    <div class="ds-meta reveal d1">
+      <div class="ds-meta-label">Division Focus</div>
+      <div class="ds-focus-list">
+        <div class="ds-focus-item">AI-assisted product selection &amp; pricing</div>
+        <div class="ds-focus-item">Automated inventory &amp; fulfilment</div>
+        <div class="ds-focus-item">Multi-channel commerce infrastructure</div>
+        <div class="ds-focus-item">Customer lifecycle automation</div>
+        <div class="ds-focus-item">Media-to-commerce conversion funnels</div>
+      </div>
+      <div class="ds-stat-row">
+        <div><div class="ds-stat-n">3</div><div class="ds-stat-l">Projects</div></div>
+        <div><div class="ds-stat-n">D2C<span>+</span></div><div class="ds-stat-l">Model</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="page-cta">
+  <div class="cta-glow"></div>
+  <div class="cta-label reveal">Work With Us</div>
+  <h2 class="cta-h2 reveal">Interested in<br>the <i>full portfolio?</i></h2>
+  <div class="cta-btns reveal">
+    <a class="btn-g" href="mailto:hello@miiholdings.com">Start a Conversation</a>
+    <a class="btn-o" href="miii-holdings.html">Back to Home</a>
+  </div>
+</div>
+
+<footer>
+  <a class="f-logo" href="miii-holdings.html"><b>MIII</b>&nbsp;&nbsp;Holdings</a>
+  <div class="f-copy">© 2026 MIII Holdings · Toronto, Canada</div>
+  <ul class="f-links">
+    <li><a href="#media">Media</a></li>
+    <li><a href="#service">Service</a></li>
+    <li><a href="#technology">Technology</a></li>
+    <li><a href="#retail">Retail</a></li>
+  </ul>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.ds-project-item,.ph-nav-item').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='46px';ring.style.height='46px';ring.style.borderColor='rgba(184,150,90,.65)';});
+  el.addEventListener('mouseleave',()=>{ring.style.width='28px';ring.style.height='28px';ring.style.borderColor='rgba(184,150,90,.4)';});
+});
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);}}),{threshold:.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
